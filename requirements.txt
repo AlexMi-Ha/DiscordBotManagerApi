@@ -1,1 +1,9 @@
 flask
+python-dotenv
+subprocess.run
+
+beautifulsoup4
+requests
+plan
+discord.py[voice]
+asyncio
