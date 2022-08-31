@@ -20,7 +20,7 @@ def get_bots():
 
 @app.route('/api/discordbots/killall', methods=['DELETE'])
 def killall_bots():
-    botMan.kill()
+    botMan.killall()
     return "Ok", 200
 
 

@@ -84,6 +84,6 @@ def start(id):
         bots[str(id)].start()
 
 
-def kill():
+def killall():
     for bot in bots.values():
         bot.kill()
