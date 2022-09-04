@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask, jsonify
 from discord.BotApiModel import BotApiModel
 import discord.manager as botMan
@@ -37,4 +39,6 @@ def run_bot(id):
 
 
 if __name__ == "__main__":
+    app.config['JSON_AS_ASCII'] = False
     app.run(port=9989)
+    botMan.killall()

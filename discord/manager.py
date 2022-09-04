@@ -8,7 +8,7 @@ SCRIPTS = {}
 
 
 def getScripts():
-    with open('discord/bots.txt', 'r') as botFile:
+    with open('discord/bots.txt', 'r', encoding='utf-8') as botFile:
         reader = csv.reader(botFile, delimiter=":")
         for bot in reader:
             id = bot[0]
@@ -17,7 +17,7 @@ def getScripts():
             filepath = bot[3]
             if os.path.isfile(filepath):
                 SCRIPTS[id] = (name, description, filepath)
-                print(f"Loaded [{id}] {name} at {filepath}")
+                print(f"Loaded [{id}] {name} - {description} at {filepath}")
             else:
                 print(f"Could not find script {filepath}. Skipping")
 
