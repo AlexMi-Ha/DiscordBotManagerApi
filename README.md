@@ -32,6 +32,13 @@ API_TOKEN=SuperSecretApiKeyToAccessThisManagementApi_AddItToEveryHeader
 BOT1_TOKEN=DiscordBotToken
 ...
 ```
+Add all your Bot-Scripts to the `/discord/bots/` folder and edit the `/discord/bots.txt` like:
+```
+<ID>:<NAME>:<DESCRIPTION>:<PATH>
+1:Test Bot:Dieser Bot steht zu Testzwecken zur verfügung:./discord/bots/test/testbot.py
+2:Test2:Description2:Path2
+...
+```
 ## Build
 - Without Docker<br />
 `pip3 install requirements.txt`<br />
