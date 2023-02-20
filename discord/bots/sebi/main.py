@@ -9,8 +9,9 @@ command_symbol = '$'
 
 # --------------------------
 
-
-client = commands.Bot(command_prefix=command_symbol)
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix=command_symbol,
+                      intents=intents)
 
 
 @client.event

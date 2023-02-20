@@ -5,7 +5,8 @@ import asyncio
 import plan
 import os
 
-client = commands.Bot(command_prefix="///")
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix="///", intents=intents)
 
 
 @client.event
