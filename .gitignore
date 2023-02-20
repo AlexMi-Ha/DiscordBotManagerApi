@@ -6,6 +6,8 @@ __pycache__
 
 content/
 
+discord/bots/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
