@@ -1,4 +1,0 @@
-1:Chris Bot:Chris Bot für den Hallo Chris Server:./discord/bots/chris/main.py
-2:Scheffkock:Bot für den DHBW Speiseplan:./discord/bots/mike/main.py
-3:Sebi Bot:Bot als Imposter von Sebi:./discord/bots/sebi/main.py
-4:Jas Bot:Haushaltsbot für Jasmin:./discord/bots/jasbot/Haushaltsbot_v2.py
