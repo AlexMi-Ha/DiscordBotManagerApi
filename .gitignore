@@ -6,7 +6,7 @@ __pycache__
 
 content/
 
-discord/bots/*
+discord/bots/*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
