@@ -47,8 +47,8 @@ Add all your Bot-Scripts to the `/discord/bots/` folder and edit the `/discord/b
 You can access the Discord Bot Tokens from the `.env` file via `os.getenv('BOT1_TOKEN')`
 ## Build
 - Without Docker<br />
-`pip3 install requirements.txt`<br />
-`python3 app.py`<br />
+`pip3 install -r requirements.txt`<br />
+`python3 app-api.py`<br />
 
 - With Docker<br/>
 Run the `build.sh`
