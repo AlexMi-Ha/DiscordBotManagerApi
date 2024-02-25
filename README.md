@@ -1,6 +1,6 @@
 # Discord Bot Management API
 API to manage all of your Discord Bots<br />
-Starting `app.py` starts a web server listening on port `9989`
+Starting `app-api.py` starts a web server listening on port `9989`
 
 ## Endpoints
 Make sure to set the `x-api-key` header to your API Key specified in the `.env` file!
