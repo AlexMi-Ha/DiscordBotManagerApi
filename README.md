@@ -5,7 +5,7 @@ Starting `app.py` starts a web server listening on port `9989`
 ## Endpoints
 Make sure to set the `x-api-key` header to your API Key specified in the `.env` file!
 
-`GET /api/discordbots/`<br/>
+`GET /api/discordbots`<br/>
 Retrieves all running bots in following format:
 ```
 {
@@ -15,15 +15,20 @@ Retrieves all running bots in following format:
   "IsRunning": false
 }
 ```
-`POST /api/discordbots/run/{id}`<br/>
+`POST /api/discordbots/{id}`<br/>
 Starts the Discord bot with the given ID
 
 
-`DELETE /api/discordbots/kill/{id}`<br/>
+`DELETE /api/discordbots/{id}`<br/>
 Stops the Discord bot with the given ID
 
-`DELETE /api/discordbots/killall`<br/>
+`DELETE /api/discordbots`<br/>
 Stops all Discord bots that are currently running
+
+## UI Variant
+There is also a UI example supplied in `app-ui.py` it uses an OAuth security token to authenticate the user and serves a simple UI for the interaction with the API.
+
+> The jwt token is read from the `identity-token` cookie.
 
 ## Setup
 Create a `.env` file in the root folder of the project. There you can specify all your secrets.<br />
