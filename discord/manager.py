@@ -56,6 +56,7 @@ class BotProcess:
             return
         if self.is_running():
             self.subproc.kill()
+            self.subproc.wait()
 
     def restart(self):
         if self.subproc is None:
