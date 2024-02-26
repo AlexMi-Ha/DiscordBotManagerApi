@@ -11,14 +11,21 @@ app = Flask(__name__)
 
 load_dotenv()
 
+def jwt_auth_config():
+    alg = 'RS256'
+    key = open(os.getenv('JWT_KEY_PATH')).read()
+    issuer = os.getenv('JWT_ISSUER')
+    audience = os.getenv('JWT_AUDIENCE')
+    role = os.getenv('JWT_ROLE')
+    return (key, alg, issuer, audience, role)
+
+(KEY, ALGORITHM, ISSUER, AUDIENCE, REQUIRED_ROLE) = jwt_auth_config()
 
 def validate_token(token):
-    algorithm = app.config['JWT_ALGORITHM']
-    secret = app.config['JWT_PUBLIC_KEY']
-
     try:
-        decoded = jwt.decode(token, secret, algorithms=[algorithm])
-        return True
+        decoded = jwt.decode(token, KEY, algorithms=[ALGORITHM], issuer=ISSUER, audience=AUDIENCE)
+        has_role = REQUIRED_ROLE in decoded['roles']
+        return has_role
     except:
         return False
 
@@ -74,13 +81,7 @@ def main_view():
     return render_template('index.html')
 
 
-def jwt_auth_config():
-    app.config['JWT_ALGORITHM'] = 'RS256'
-    app.config['JWT_PUBLIC_KEY'] = open(os.getenv('JWT_KEY_PATH')).read()
-
-
 if __name__ == "__main__":
     app.config['JSON_AS_ASCII'] = False
-    jwt_auth_config()
     app.run(port=9989)
     botMan.killall()
