@@ -36,21 +36,21 @@ def get_bots():
 
 @app.route('/api/discordbots', methods=['DELETE'])
 @require_appkey
-def killall_bots():
+def killall_bots() -> tuple[str, int]:
     botMan.killall()
     return "Ok", 200
 
 
 @app.route('/api/discordbots/<int:id>', methods=['DELETE'])
 @require_appkey
-def kill_bot(id):
+def kill_bot(id) -> tuple[str, int]:
     botMan.kill(id)
     return "Ok", 200
 
 
 @app.route('/api/discordbots/<int:id>', methods=['POST'])
 @require_appkey
-def run_bot(id):
+def run_bot(id) -> tuple[str, int]:
     botMan.start(id)
     return "Ok", 200
 
