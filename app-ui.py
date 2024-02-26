@@ -38,7 +38,7 @@ def authorize(user = False):
                 return view_function(*args, **kwargs)
             else:
                 if user:
-                    redirect(os.getenv('IDENTITY_URL'))
+                    return redirect(os.getenv('IDENTITY_URL'))
                 else:
                     abort(401)
         return decorated_function
