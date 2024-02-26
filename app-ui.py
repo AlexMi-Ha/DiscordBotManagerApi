@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from functools import wraps
-from flask import Flask, jsonify, request, abort, render_template
+from flask import Flask, jsonify, request, abort, render_template, redirect
 from discord.BotApiModel import BotApiModel
 import discord.manager as botMan
 from dotenv import load_dotenv
@@ -30,18 +30,23 @@ def validate_token(token):
         return False
 
 
-def require_appkey(view_function):
-    @wraps(view_function)
-    def decorated_function(*args, **kwargs):
-        if request.cookies.get('identity-token') and validate_token(request.cookies.get('identity-token')):
-            return view_function(*args, **kwargs)
-        else:
-            abort(401)
-    return decorated_function
+def authorize(user = False):
+    def require_appkey(view_function):
+        @wraps(view_function)
+        def decorated_function(*args, **kwargs):
+            if request.cookies.get('identity-token') and validate_token(request.cookies.get('identity-token')):
+                return view_function(*args, **kwargs)
+            else:
+                if user:
+                    redirect(os.getenv('IDENTITY_URL'))
+                else:
+                    abort(401)
+        return decorated_function
+    return require_appkey
 
 
 @app.route('/api/discordbots', methods=['GET'])
-@require_appkey
+@authorize()
 def get_bots():
     botModels = []
     for bot in botMan.get_bots():
@@ -55,28 +60,28 @@ def get_bots():
 
 
 @app.route('/api/discordbots', methods=['DELETE'])
-@require_appkey
+@authorize()
 def killall_bots():
     botMan.killall()
     return "Ok", 200
 
 
 @app.route('/api/discordbots/<int:id>', methods=['DELETE'])
-@require_appkey
+@authorize()
 def kill_bot(id):
     botMan.kill(id)
     return "Ok", 200
 
 
 @app.route('/api/discordbots/<int:id>', methods=['POST'])
-@require_appkey
+@authorize()
 def run_bot(id):
     botMan.start(id)
     return "Ok", 200
 
 
 @app.route('/', methods=['GET'])
-@require_appkey
+@authorize(True)
 def main_view():
     return render_template('index.html')
 
