@@ -58,7 +58,7 @@ function disableKillAll(val = true) {
 function killAll() {
     setSpinner();
 
-    fetch('/api/discordbots', {
+    fetch('/api/discordbots/runningbots', {
         method: 'DELETE'
     })
     .then(e => {
@@ -72,7 +72,7 @@ function killAll() {
 function runBot(id) {
     setSpinner();
 
-    fetch('/api/discordbots/' + id, {
+    fetch('/api/discordbots/runningbots/' + id, {
         method: 'POST'
     })
     .then(e => {
@@ -86,7 +86,7 @@ function runBot(id) {
 function killBot(id) {
     setSpinner();
 
-    fetch('/api/discordbots/' + id, {
+    fetch('/api/discordbots/runningbots/' + id, {
         method: 'DELETE'
     })
     .then(e => {
@@ -94,6 +94,89 @@ function killBot(id) {
             displayError("Failed killing the bot!");
         }
         refreshLists();
+    })
+}
+
+function pullBot(id) {
+    setSpinner();
+
+    fetch('/api/discordbots/' + id + '/pull', {
+        method: 'POST'
+    })
+    .then(e => {
+        if(!e.ok) {
+            displayError("Failed pulling the bot!");
+        }
+        refreshLists();
+    })
+}
+
+function updateBotConfig(id, config) {
+    setSpinner();
+
+    const formData = new FormData();
+    formData.append('environment', config);
+
+    return fetch('/api/discordbots/' + id + '/config', {
+        method: 'POST',
+        body: formData
+    })
+    .then(e => {
+        if(!e.ok) {
+            displayError("Failed updating the bot config!");
+        }
+        refreshLists();
+    })
+}
+
+function addBot(githubUrl, botName, botDescription, entryFile, environment) {
+    setSpinner();
+
+    const formData = new FormData();
+    formData.append('github', githubUrl);
+    formData.append('name', botName);
+    formData.append('description', botDescription);
+    formData.append('entry', entryFile);
+    formData.append('environment', environment);
+
+    return fetch('/api/discordbots', {
+        method: 'POST',
+        body: formData
+    })
+    .then(e => {
+        if(!e.ok) {
+            displayError("Failed adding the bot!");
+        }
+        refreshLists();
+    })
+}
+
+function deleteBot(id) {
+    setSpinner();
+
+    fetch('/api/discordbots/' + id, {
+        method: 'DELETE'
+    })
+    .then(e => {
+        if(!e.ok) {
+            displayError("Failed deleting the bot!");
+        }
+        refreshLists();
+    })
+}
+
+function getBotConfig(id) {
+    setSpinner();
+
+    return fetch('/api/discordbots/' + id + '/config', {
+        method: 'GET'
+    })
+    .then(e => {
+        if(!e.ok) {
+            displayError("Failed getting the bot config!");
+            throw Error;
+        }
+        return e.json();
     })
 }
 
@@ -110,6 +193,102 @@ function displayError(error) {
             dialog.classList.remove('disposing');
         }, 1000)
     }, 2000)
+}
+
+const editDialog = document.getElementById('edit-dialog');
+const editEnvironment = document.getElementById('edit-environment');
+let currentConfigureId = undefined;
+let currentlySaving = false;
+
+function configIsValid() {
+    return editEnvironment.reportValidity();
+}
+
+function openConfigureDialog(id) {
+    if(currentlySaving)
+        return;
+    editEnvironment.value = '';
+    getBotConfig(id)
+    .then(e => {
+        editEnvironment.value = e;
+        editDialog.showModal();
+        currentConfigureId = id;
+    });
+}
+
+function cancelConfigureDialog() {
+    if(currentlySaving)
+        return;
+
+    editDialog.close();
+    currentConfigureId = undefined;
+    refreshLists();
+}
+
+async function saveConfigureDialog() {
+    if(currentlySaving) {
+        return
+    }
+    if(!configIsValid()) {
+        return;
+    }
+
+    currentlySaving = true;
+    editDialog.close();
+    try {
+        await updateBotConfig(currentConfigureId, editEnvironment.value)
+    }finally {
+        currentConfigureId = undefined;
+        currentlySaving = false;
+    }
+}
+
+const addDialog = document.getElementById('add-dialog');
+const addGithub = document.getElementById('add-github');
+const addName = document.getElementById('add-botname');
+const addDescription = document.getElementById('add-botdescription');
+const addEntry = document.getElementById('add-botentry');
+const addEnvironment = document.getElementById('add-environment');
+
+function addIsValid() {
+    return addGithub.reportValidity() && addName.reportValidity() && addDescription.reportValidity() && addEntry.reportValidity() && addEnvironment.reportValidity();
+}
+
+function openAddDialog() {
+    if(currentlySaving)
+        return;
+
+    addGithub.value = '';
+    addName.value = '';
+    addDescription.value = '';
+    addEntry.value = '';
+    addEnvironment.value = '';
+
+    addDialog.showModal();
+}
+
+function cancelAddDialog() {
+    if(currentlySaving)
+        return;
+
+    addDialog.close();
+}
+
+async function saveAddDialog() {
+    if(currentlySaving)
+        return;
+
+    if(!addIsValid()) {
+        return;
+    } 
+
+    currentlySaving = true;
+    addDialog.close();
+    try {
+        await addBot(addGithub.value, addName.value, addDescription.value, addEntry.value, addEnvironment.value);
+    }finally {
+        currentlySaving = false;
+    }
 }
 
 function buildBotList(bots) {
@@ -132,9 +311,12 @@ function buildBotContainer(id, name, description, active) {
             <div class="bot-actions">
                 ${
                     active ?
-                    '<button class="btn btn-kill" onclick="killBot('+id+')">Kill</button>' :
-                    '<button class="btn btn-run" onclick="runBot('+id+')">Run</button>'
+                    '<button class="btn btn-kill" onclick="killBot(\''+id+'\')">Kill</button>' :
+                    '<button class="btn btn-run" onclick="runBot(\''+id+'\')">Run</button>'
                 }
+                <button class="btn" onclick="pullBot('${id}')">Pull from Git</button>
+                <button class="btn" onclick="openConfigureDialog('${id}')">Configure</button>
+                <button class="btn btn-kill" onclick="deleteBot('${id}')">Delete Bot</button>
             </div>
         </div>
     `

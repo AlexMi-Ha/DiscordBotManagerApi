@@ -92,6 +92,41 @@ p {
     font-size: 18px;
 }
 
+dialog::backdrop {
+    background-image: black;
+    opacity: 0.75;
+}
+
+dialog {
+    background-color: var(--background);
+    width: 100%;
+    max-width: 50em;
+}
+
+dialog h3 {
+    color: var(--primary);
+}
+
+dialog input, dialog textarea {
+    display:block;
+    width: 100%;
+    margin-bottom: .5em;
+    background-color: var(--secondary);
+    color: var(--text);
+    outline: none;
+    border: none;
+    padding-inline: 1em;
+}
+
+dialog textarea {
+    resize: vertical;
+    min-height: 10em;
+}
+
+dialog input {
+    height: 2em;
+}
+
 .btn {
     display: inline-block;
     font-weight: 400;
@@ -107,6 +142,10 @@ p {
     font-size: 1rem;
     border-radius: 0.25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background-color: var(--accent);
+    color: var(--text);
+    outline: none;
+    border: none;
 }
 
 .btn:disabled {
