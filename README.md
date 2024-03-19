@@ -30,7 +30,7 @@ There is also a UI example supplied in `app-ui.py` it uses an OAuth security tok
 
 > The jwt token is read from the `identity-token` cookie.
 
-## Setup
+## Setup (only for no-ui variant)
 Create a `.env` file in the root folder of the project. There you can specify all your secrets.<br />
 ```
 API_TOKEN=SuperSecretApiKeyToAccessThisManagementApi_AddItToEveryHeader
