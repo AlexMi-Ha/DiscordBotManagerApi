@@ -14,12 +14,29 @@
     <section class="content">
         <h1>Bot Manager</h1>
         <button id="btn-kill-all" class="btn btn-kill" onclick="killAll()" disabled>Kill All</button>
+        <button id="btn-add-bot" class="btn" onclick="openAddDialog()">Add New Bot</button>
         <h3>Active Bots</h3>
         <div id="list-active-bots" class="bot-list">
         </div>            
         <h3>Inactive Bots</h3>
         <div id="list-inactive-bots" class="bot-list"></div>            
     </section>
+    <dialog id="edit-dialog">
+        <h3>Update your Bot</h3>
+        <textarea id="edit-environment" autofocus placeholder=".env file" required></textarea>
+        <button id="edit-save" class="btn btn-run" onclick="saveConfigureDialog()">Save</button>
+        <button id="edit-cancel" class="btn btn-kill" onclick="cancelConfigureDialog()">Cancel</button>
+    </dialog>
+    <dialog id="add-dialog">
+        <h3>Add a new Bot</h3>
+        <input id="add-github" placeholder="Github Url" required>
+        <input id="add-botname" placeholder="Bot Name" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df]+">
+        <input id="add-botdescription" placeholder="Bot Description" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df]+">
+        <input id="add-botentry" placeholder="Entry Filename" required pattern="[A-Za-z\s0-9_\-]+\.py">
+        <textarea id="add-environment" autofocus placeholder=".env file" required></textarea>
+        <button id="add-save" class="btn btn-run" onclick="saveAddDialog()">Save</button>
+        <button id="add-cancel" class="btn btn-kill" onclick="cancelAddDialog()">Cancel</button>
+    </dialog>
     <script src="/static/js/site.js"></script>
 </body>
 </html>

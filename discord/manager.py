@@ -1,14 +1,30 @@
 import subprocess
 import csv
 import os
+import shutil
 import sys
+import uuid
+from dotenv import dotenv_values
+import os
+import stat
+
+def rmtree(top):
+    for root, dirs, files in os.walk(top, topdown=False):
+        for name in files:
+            filename = os.path.join(root, name)
+            os.chmod(filename, stat.S_IWUSR)
+            os.remove(filename)
+        for name in dirs:
+            os.rmdir(os.path.join(root, name))
+    os.rmdir(top)      
+
 
 PYTHON_EXE = sys.executable
 SCRIPTS = {}
 
 
 def getScripts():
-    with open('discord/bots.txt', 'r', encoding='utf-8') as botFile:
+    with open('discord/bots.txt', 'r', newline='', encoding='utf-8') as botFile:
         reader = csv.reader(botFile, delimiter=":")
         for bot in reader:
             id = bot[0]
@@ -21,9 +37,22 @@ def getScripts():
             else:
                 print(f"Could not find script {filepath}. Skipping")
 
+def updateScriptsFile():
+    with open('discord/bots.txt', "w", newline='', encoding='utf-8') as botFile:
+        writer = csv.writer(botFile, delimiter=":")
+        for id in SCRIPTS:
+            (name, description, path) = SCRIPTS[id]
+            writer.writerow([id, name, description, path])
 
 getScripts()
 
+def saveEnvConfig(envPath, envConfig):
+    with open(envPath, 'w', encoding='utf-8') as envFile:
+        envFile.write(envConfig)
+
+def readEnvConfig(envPath):
+    with open(envPath, 'r', encoding='utf-8') as envFile:
+        return envFile.read()
 
 class BotProcess:
     def __init__(self, script_key: str):
@@ -69,6 +98,57 @@ class BotProcess:
 bots = {}
 for id in SCRIPTS:
     bots[id] = BotProcess(id)
+
+def add_bot(github_url : str, bot_name : str, bot_description : str, entry_file : str, env_config):
+    bot_name = bot_name.replace(":", " ").replace("/", "").replace("<", "").replace(">", "").replace("\"", "").replace("\\", "").replace("|", "").replace("?", "").replace("*", "").replace("\n", " ")
+    bot_description.replace(":", " ").replace("\n", " ")
+    if "/" in entry_file or "\\" in entry_file:
+        raise ValueError
+    
+    clone = subprocess.run(["git", "-C", "./discord/bots", "clone", github_url, bot_name])
+    clone.check_returncode()
+
+    id = str(uuid.uuid4())
+    path = "./discord/bots/" + bot_name + "/"
+    SCRIPTS[id] = (bot_name, bot_description, path + entry_file)
+    updateScriptsFile()
+    
+    saveEnvConfig(path + ".env", env_config)
+    
+    bots[id] = BotProcess(id)
+
+def pull_bot(id):
+    name = bots[id].name
+    path = "./discord/bots/" + name
+    pull = subprocess.run(["git", "-C", path, "pull"])
+    pull.check_returncode()
+
+    if bots[id].is_running():
+        bots[id].restart()
+
+def update_env(id, envConfig):
+    name = bots[id].name
+    path = "./discord/bots/" + name + "/.env"
+    saveEnvConfig(path, envConfig)
+
+    if bots[id].is_running():
+        bots[id].restart()
+
+def get_env(id):
+    name = bots[id].name
+    path = "./discord/bots/" + name + "/.env"
+    return readEnvConfig(path)
+
+def remove_bot(id):
+    name = bots[id].name
+    path = "./discord/bots/" + name
+
+    kill(id)
+    del bots[id]
+    del SCRIPTS[id]
+    updateScriptsFile()
+
+    rmtree(path)
 
 
 def get_bots():

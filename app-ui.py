@@ -59,21 +59,57 @@ def get_bots():
     return jsonify(botModels)
 
 
-@app.route('/api/discordbots', methods=['DELETE'])
+@app.route('/api/discordbots/runningbots', methods=['DELETE'])
 @authorize()
 def killall_bots():
     botMan.killall()
     return "Ok", 200
 
+@app.route('/api/discordbots', methods=['POST'])
+@authorize()
+def add_bot():
+    github = request.form.get('github')
+    name = request.form.get('name')
+    description = request.form.get('description')
+    entry = request.form.get('entry')
+    environment = request.form.get('environment')
 
-@app.route('/api/discordbots/<int:id>', methods=['DELETE'])
+    botMan.add_bot(github, name, description, entry, environment)
+    return "Ok", 200
+
+@app.route('/api/discordbots/<string:id>/pull', methods=['POST'])
+@authorize()
+def pull_bot(id):
+    botMan.pull_bot(id)
+    return "Ok", 200
+
+@app.route('/api/discordbots/<string:id>/config', methods=['POST'])
+@authorize()
+def update_config(id):
+    environment = request.form.get('environment')
+    botMan.update_env(id, environment)
+    return "Ok", 200
+
+@app.route('/api/discordbots/<string:id>/config', methods=['GET'])
+@authorize()
+def get_config(id):
+    return jsonify(botMan.get_env(id))
+    
+
+@app.route('/api/discordbots/<string:id>', methods=['DELETE'])
+@authorize()
+def delete_bot(id):
+    botMan.remove_bot(id)
+    return "Ok", 200
+
+@app.route('/api/discordbots/runningbots/<string:id>', methods=['DELETE'])
 @authorize()
 def kill_bot(id):
     botMan.kill(id)
     return "Ok", 200
 
 
-@app.route('/api/discordbots/<int:id>', methods=['POST'])
+@app.route('/api/discordbots/runningbots/<string:id>', methods=['POST'])
 @authorize()
 def run_bot(id):
     botMan.start(id)

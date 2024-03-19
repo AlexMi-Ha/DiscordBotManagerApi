@@ -20,7 +20,7 @@
     --accent: #4494e4;
     --static11: rgba(255,255,255,0.03);
     --white: #fff;
-    --green: #71de74;
+    --green: #86cd2a;
     --btn-disabled-color: #a6a6a6;
     
     --font-size--large-heading-plus: 40px;
@@ -92,6 +92,46 @@ p {
     font-size: 18px;
 }
 
+dialog::backdrop {
+    background-image: black;
+    opacity: 0.75;
+}
+
+dialog {
+    background-color: var(--background);
+    width: 100%;
+    max-width: 50em;
+}
+
+dialog .btn {
+    float: right;
+    margin-left: .5em;
+}
+
+dialog h3 {
+    color: var(--primary);
+}
+
+dialog input, dialog textarea {
+    display:block;
+    width: 100%;
+    margin-bottom: .5em;
+    background-color: var(--secondary);
+    color: var(--text);
+    outline: none;
+    border: none;
+    padding-inline: 1em;
+}
+
+dialog textarea {
+    resize: vertical;
+    min-height: 10em;
+}
+
+dialog input {
+    height: 2em;
+}
+
 .btn {
     display: inline-block;
     font-weight: 400;
@@ -107,6 +147,10 @@ p {
     font-size: 1rem;
     border-radius: 0.25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background-color: var(--accent);
+    color: var(--text);
+    outline: none;
+    border: none;
 }
 
 .btn:disabled {
@@ -116,7 +160,7 @@ p {
 }
 
 .btn-run {
-    color: var(--text);
+    color: black;
     background-color: var(--green);
     border-color: var(--green);
 }
@@ -147,6 +191,13 @@ p {
     min-width: 300px;
     padding-bottom: 1em;
     margin: 1em;
+    border-radius: 5px;
+}
+
+.bot-panel .bot-title p:first-child {
+    color: var(--primary);
+    font-size: 20px;
+    margin-bottom: 0;
 }
 
 .bot-active-icon {
@@ -161,6 +212,15 @@ p {
 }
 .bot-inactive-icon .circle {
     background-color: var(--primary);
+}
+
+.bot-actions > .btn:first-child {
+    display:block;
+    margin: 0 auto;
+}
+
+.bot-actions > .btn {
+    margin-top: .5em;
 }
 
 .circle {
