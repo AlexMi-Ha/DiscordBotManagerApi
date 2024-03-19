@@ -37,7 +37,7 @@ API_TOKEN=SuperSecretApiKeyToAccessThisManagementApi_AddItToEveryHeader
 BOT1_TOKEN=DiscordBotToken
 ...
 ```
-Add all your Bot-Scripts to the `/discord/bots/` folder and edit the `/discord/bots.txt` like:
+Add all your Bot-Scripts to the `/discord/bots/` folder and edit the `/discord/bots/bots.txt` like:
 ```
 <ID>:<NAME>:<DESCRIPTION>:<PATH>
 1:Test Bot:Dieser Bot steht zu Testzwecken zur verfügung:./discord/bots/test/testbot.py

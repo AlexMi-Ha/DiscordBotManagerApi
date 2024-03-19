@@ -24,7 +24,7 @@ SCRIPTS = {}
 
 
 def getScripts():
-    with open('discord/bots.txt', 'r', newline='', encoding='utf-8') as botFile:
+    with open('discord/bots/bots.txt', 'r', newline='', encoding='utf-8') as botFile:
         reader = csv.reader(botFile, delimiter=":")
         for bot in reader:
             id = bot[0]
@@ -38,7 +38,7 @@ def getScripts():
                 print(f"Could not find script {filepath}. Skipping")
 
 def updateScriptsFile():
-    with open('discord/bots.txt', "w", newline='', encoding='utf-8') as botFile:
+    with open('discord/bots/bots.txt', "w", newline='', encoding='utf-8') as botFile:
         writer = csv.writer(botFile, delimiter=":")
         for id in SCRIPTS:
             (name, description, path) = SCRIPTS[id]
