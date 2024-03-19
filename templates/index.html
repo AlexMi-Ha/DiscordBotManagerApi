@@ -30,8 +30,8 @@
     <dialog id="add-dialog">
         <h3>Add a new Bot</h3>
         <input id="add-github" placeholder="Github Url" required>
-        <input id="add-botname" placeholder="Bot Name" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df]+">
-        <input id="add-botdescription" placeholder="Bot Description" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df]+">
+        <input id="add-botname" placeholder="Bot Name" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df\s]+">
+        <input id="add-botdescription" placeholder="Bot Description" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df\s]+">
         <input id="add-botentry" placeholder="Entry Filename" required pattern="[A-Za-z\s0-9_\-]+\.py">
         <textarea id="add-environment" autofocus placeholder=".env file" required></textarea>
         <button id="add-save" class="btn btn-run" onclick="saveAddDialog()">Save</button>
