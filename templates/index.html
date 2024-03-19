@@ -22,9 +22,10 @@
         <div id="list-inactive-bots" class="bot-list"></div>            
     </section>
     <dialog id="edit-dialog">
+        <h3>Update your Bot</h3>
         <textarea id="edit-environment" autofocus placeholder=".env file" required></textarea>
-        <button id="edit-cancel" onclick="cancelConfigureDialog()">Cancel</button>
-        <button id="edit-save" onclick="saveConfigureDialog()">Save</button>
+        <button id="edit-save" class="btn btn-run" onclick="saveConfigureDialog()">Save</button>
+        <button id="edit-cancel" class="btn btn-kill" onclick="cancelConfigureDialog()">Cancel</button>
     </dialog>
     <dialog id="add-dialog">
         <h3>Add a new Bot</h3>
@@ -33,8 +34,8 @@
         <input id="add-botdescription" placeholder="Bot Description" required pattern="[A-Za-z0-9\u00c4\u00e4\u00d6\u00f6\u00dc\u00fc\u00df]+">
         <input id="add-botentry" placeholder="Entry Filename" required pattern="[A-Za-z\s0-9_\-]+\.py">
         <textarea id="add-environment" autofocus placeholder=".env file" required></textarea>
-        <button id="add-cancel" onclick="cancelAddDialog()">Cancel</button>
-        <button id="add-save" onclick="saveAddDialog()">Save</button>
+        <button id="add-save" class="btn btn-run" onclick="saveAddDialog()">Save</button>
+        <button id="add-cancel" class="btn btn-kill" onclick="cancelAddDialog()">Cancel</button>
     </dialog>
     <script src="/static/js/site.js"></script>
 </body>

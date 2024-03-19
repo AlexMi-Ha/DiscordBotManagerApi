@@ -8,7 +8,6 @@ import os
 import jwt
 
 app = Flask(__name__)
-DEBUG_MODE = True
 
 load_dotenv()
 
@@ -35,9 +34,7 @@ def authorize(user = False):
     def require_appkey(view_function):
         @wraps(view_function)
         def decorated_function(*args, **kwargs):
-            print("auth")
-            if request.cookies.get('identity-token') and validate_token(request.cookies.get('identity-token')) or DEBUG_MODE:
-                print("Succ")
+            if request.cookies.get('identity-token') and validate_token(request.cookies.get('identity-token')):
                 return view_function(*args, **kwargs)
             else:
                 if user:
@@ -71,7 +68,6 @@ def killall_bots():
 @app.route('/api/discordbots', methods=['POST'])
 @authorize()
 def add_bot():
-    print("lel")
     github = request.form.get('github')
     name = request.form.get('name')
     description = request.form.get('description')

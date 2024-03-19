@@ -20,7 +20,7 @@
     --accent: #4494e4;
     --static11: rgba(255,255,255,0.03);
     --white: #fff;
-    --green: #71de74;
+    --green: #86cd2a;
     --btn-disabled-color: #a6a6a6;
     
     --font-size--large-heading-plus: 40px;
@@ -103,6 +103,11 @@ dialog {
     max-width: 50em;
 }
 
+dialog .btn {
+    float: right;
+    margin-left: .5em;
+}
+
 dialog h3 {
     color: var(--primary);
 }
@@ -155,7 +160,7 @@ dialog input {
 }
 
 .btn-run {
-    color: var(--text);
+    color: black;
     background-color: var(--green);
     border-color: var(--green);
 }
@@ -186,6 +191,13 @@ dialog input {
     min-width: 300px;
     padding-bottom: 1em;
     margin: 1em;
+    border-radius: 5px;
+}
+
+.bot-panel .bot-title p:first-child {
+    color: var(--primary);
+    font-size: 20px;
+    margin-bottom: 0;
 }
 
 .bot-active-icon {
@@ -200,6 +212,15 @@ dialog input {
 }
 .bot-inactive-icon .circle {
     background-color: var(--primary);
+}
+
+.bot-actions > .btn:first-child {
+    display:block;
+    margin: 0 auto;
+}
+
+.bot-actions > .btn {
+    margin-top: .5em;
 }
 
 .circle {
